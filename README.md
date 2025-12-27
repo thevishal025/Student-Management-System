@@ -42,6 +42,13 @@ Student-Management-System/
 
 ---
 
+## 📸 Screenshot
+![Program Output](https://github.com/thevishal025/Student-Management-System/blob/main/Screenshot3.png)
+![Program Output](https://github.com/thevishal025/Student-Management-System/blob/main/Screenshot2.png)
+![Program Output](https://github.com/thevishal025/Student-Management-System/blob/main/Screenshot1.png)
+
+---
+
 ## ▶️ How to Run the Project
 
 ### Step 1: Compile the Program
