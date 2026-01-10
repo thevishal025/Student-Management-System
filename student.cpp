@@ -1,27 +1,35 @@
+// Include all standard C++ libraries
 #include <bits/stdc++.h>
 using namespace std;
 
+// Student class to store and manage student information
 class Student {
 protected:
+    // Protected data (visible only inside class & derived classes)
     string email;
     string mobile;
 
 public:
+    // Public data members
     int roll;
     string name;
     string father;
     string course;
     string scholar;
     string dob;
+
+    // Marks of different subjects
     float c_marks;
     float p_marks;
     float com_marks;
     float dig_marks;
 
+    // Marks of different subjects
     void input() {
         cout <<endl<<"Enter Roll Number: ";
         cin >>roll;
         
+        // Clear input buffer
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
         cout <<"Enter Name: ";
@@ -51,6 +59,7 @@ public:
         cout <<"Enter Digital Marketing Marks: ";
         cin >>dig_marks;
 
+        // Clear buffer again
         cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
         cout <<"Enter E-mail: ";
@@ -60,10 +69,12 @@ public:
         getline(cin, mobile);
     }
 
+    // Function to calculate percentage
     float percentage() {
         return (c_marks + p_marks + com_marks + dig_marks) / 4;
     }
 
+    // Function to calculate grade based on percentage
     string grade() {
         float per = percentage();
         if (per >= 90) return "A+";
@@ -74,6 +85,7 @@ public:
         else return "F";
     }
 
+    // Admin view (shows full details including contact)
     void admin() {
         cout<<endl<<"<<<--- STUDENT DETAILS --->>>";
         cout<<endl<<"Roll Number: "<<roll;
@@ -93,6 +105,7 @@ public:
         cout<<endl<<"Mobile Number: "<<mobile;
     }
 
+    // User view (no contact details)
     void user() {
         cout<<endl<<"<<<--- STUDENT DETAILS --->>>";
         cout<<endl<<"Roll Number: "<<roll;
@@ -109,11 +122,13 @@ public:
         cout<<endl<<"Grade: "<<grade();
     }
 
+    // Write student data into file using '|' separator
     void file(ofstream &out) {
         out << roll << "|" << name << "|" << father << "|" << course << "|" << scholar << "|" << dob << "|" << c_marks << "|" << p_marks << "|" << com_marks << "|" << dig_marks
             << "|" << email << "|" << mobile << endl;
     }
 
+    // Save data into students.txt file
     void save() {
         ofstream out("students.txt", ios::app);
         file(out);
@@ -121,6 +136,7 @@ public:
     }
 };
 
+// Function for admin login verification
 bool admin_login() {
     string id, pass;
     cout <<endl<<"Admin ID: ";
@@ -128,9 +144,11 @@ bool admin_login() {
     cout <<"Password: ";
     cin >> pass;
 
+    // Hardcoded admin credentials
     return (id == "vishal" && pass == "0025");
 }
 
+// Function to search student by roll number
 void searchStudent(bool isAdmin) {
     ifstream in("students.txt");
     int searchRoll;
@@ -143,6 +161,7 @@ void searchStudent(bool isAdmin) {
     char ch;
     bool found = false;
 
+    // Read file data line by line
     while (in >> roll >> ch) {
         getline(in, name, '|');
         getline(in, father, '|');
@@ -156,8 +175,10 @@ void searchStudent(bool isAdmin) {
         getline(in, email, '|');
         getline(in, mobile);
 
+        // If roll number matches
         if (roll == searchRoll) {
             found = true;
+            
             float per = (c_marks + p_marks + com_marks + dig_marks) / 4;
             string grade;
 
@@ -183,6 +204,7 @@ void searchStudent(bool isAdmin) {
             cout<<endl<<"Digital Marketing: "<<dig_marks;
             cout<<endl<<"Grade: "<<grade;
 
+            // Admin can see contact details
             if (isAdmin) {
                 cout<<endl<<endl<<"<<<--- CONTACT DETAILS --->>>";
                 cout<<endl<<"Email: "<< email;
@@ -198,6 +220,7 @@ void searchStudent(bool isAdmin) {
     in.close();
 }
 
+// Function to delete student record
 void deleteStudent() {
     int searchRoll;
     cout << "Enter Roll Number to Delete: ";
@@ -212,6 +235,7 @@ void deleteStudent() {
     char ch;
     bool found = false;
 
+    // Copy all records except the one to be deleted
     while (in >> roll >> ch) {
         getline(in, name, '|');
         getline(in, father, '|');
@@ -236,6 +260,7 @@ void deleteStudent() {
     in.close();
     out.close();
 
+    // Replace old file with updated file
     remove("students.txt");
     rename("temp.txt", "students.txt");
 
@@ -245,7 +270,7 @@ void deleteStudent() {
         cout <<endl<<"Student Not Found!";
 }
 
-
+// Main function (Program execution starts here)
 int main() {
     int choice;
     Student s;
@@ -256,6 +281,7 @@ int main() {
     cout <<endl<<"Enter Choice: ";
     cin >> choice;
 
+    // Admin section
     if (choice == 1) {
         if (!admin_login()) {
             cout <<endl<<"Invalid Login!";
@@ -291,9 +317,11 @@ int main() {
             }
         } while (choice != 4);
     }
+    // User section
     else if (choice == 2) {
         searchStudent(false);
     }
 
     return 0;
+
 }
